@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="tanks"
+run/main_scene="uid://bm56bia4coh0m"
 config/features=PackedStringArray("4.4", "Forward Plus")
 
 [dotnet]
 
 project/assembly_name="tanks"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
