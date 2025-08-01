@@ -9,7 +9,7 @@ class SplitResult:
 
 ## Returns true if the first argument [param inner] is completely enclosed within the
 ## second argument [param outer].
-func completely_enclosed(inner: PackedVector2Array, outer: PackedVector2Array) -> bool:
+func is_completely_enclosed(inner: PackedVector2Array, outer: PackedVector2Array) -> bool:
     var clip_result := Geometry2D.clip_polygons(outer, inner)
     var enclosed := false
     for p in clip_result:
@@ -17,6 +17,17 @@ func completely_enclosed(inner: PackedVector2Array, outer: PackedVector2Array) -
             enclosed = true
             break
     return enclosed
+
+
+func intersects(polygon_a: PackedVector2Array, polygon_b: PackedVector2Array):
+    for point in polygon_a:
+        if Geometry2D.is_point_in_polygon(point, polygon_b):
+            return true
+    for point in polygon_b:
+        if Geometry2D.is_point_in_polygon(point, polygon_a):
+            return true
+    for i in range(0, polygon_a.size(), 2):
+        pass
 
 
 ## Compute the area of a polygon. Uses the algorithm found here:
@@ -67,3 +78,21 @@ func split(polygon: PackedVector2Array, split_point: Vector2) -> SplitResult:
     result.side_b = Geometry2D.clip_polygons(polygon, mask)
     result.vertical = vertical
     return result
+
+
+func clip_handle_holes(against: PackedVector2Array, clip: PackedVector2Array) -> Array[PackedVector2Array]:
+    var results := Geometry2D.clip_polygons(against, clip)
+    var enclosed := false
+    for p in results:
+        if Geometry2D.is_polygon_clockwise(p):
+            enclosed = true
+            break
+    if enclosed:
+        # clear results
+        results = []
+        var split_point := extents(clip).get_center()
+        var split_result := split(against, split_point)
+        for ps in [split_result.side_a, split_result.side_b]:
+            for p in ps:
+                results.append_array(Geometry2D.clip_polygons(p, clip))
+    return results

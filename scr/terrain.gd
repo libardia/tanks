@@ -3,7 +3,6 @@ extends Node2D
 
 @export var terrain_texture: Texture2D
 @export var transparency_threshold: float = 0.1
-@export var epsilon: float = 0
 @export var sector_size: int = 128
 @export var debug_mode: bool = true
 @export var show_original_polys: bool = false
@@ -25,11 +24,16 @@ func terrain_progress(value: float):
 func terrain_done(polys: Array[PackedVector2Array]):
     print("Terrain done with ", polys.size(), " polygons")
     for p in polys:
-        var p2d := Polygon2D.new()
-        p2d.polygon = p
-        p2d.color = Color(randf(), randf(), randf())
-        p2d.position = terrain_image.get_size() / -2.0
-        add_child.call_deferred(p2d)
+        var chunk: TerrainChunk = preload("res://obj/terrain-chunk.tscn").instantiate()
+        chunk.polygon = p
+        chunk.color = Color(randf(), randf(), randf())
+        chunk.position = terrain_image.get_size() / -2.0
+        add_child.call_deferred(chunk)
+        #var p2d := Polygon2D.new()
+        #p2d.polygon = p
+        #p2d.color = Color(randf(), randf(), randf())
+        #p2d.position = terrain_image.get_size() / -2.0
+        #add_child.call_deferred(p2d)
 
 
 #func _ready() -> void:
@@ -122,5 +126,5 @@ func invert_bitmap(bitmap: BitMap) -> BitMap:
     return inverted
 
 
-func bitmap_to_polygons(bitmap: BitMap, epsilon: float) -> Array[PackedVector2Array]:
-    return bitmap.opaque_to_polygons(Rect2(Vector2(), bitmap.get_size()), epsilon)
+func bitmap_to_polygons(bitmap: BitMap) -> Array[PackedVector2Array]:
+    return bitmap.opaque_to_polygons(Rect2(Vector2(), bitmap.get_size()), 0)
