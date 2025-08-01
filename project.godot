@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="tanks"
+config/tags=PackedStringArray("2d", "mine", "physics")
 run/main_scene="uid://bm56bia4coh0m"
 config/features=PackedStringArray("4.4", "Forward Plus")
+
+[autoload]
+
+PolygonUtil="*res://scr/global/polygon_util.gd"
 
 [dotnet]
 

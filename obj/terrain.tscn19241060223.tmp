@@ -1,9 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://cyuh6721u1dvf"]
 
 [ext_resource type="Script" uid="uid://cnv5j70rqi1qj" path="res://scr/terrain.gd" id="1_o37xw"]
-[ext_resource type="Texture2D" uid="uid://c33d16e3ioygh" path="res://img/ground02.ase" id="2_naube"]
+[ext_resource type="Texture2D" uid="uid://bexuh4cew0nn7" path="res://img/ground01.ase" id="2_naube"]
 
 [node name="Terrain" type="Node2D"]
 script = ExtResource("1_o37xw")
-terrain_texture = ExtResource("2_naube")
+ground_texture = ExtResource("2_naube")
+transparency_threshold = null
+epsilon = null
+sector_size = null
+debug_mode = null
 show_original_polys = true
