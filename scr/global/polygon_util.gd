@@ -1,4 +1,4 @@
-extends Node
+class_name PolygonUtil
 
 
 class SplitResult:
@@ -9,7 +9,7 @@ class SplitResult:
 
 ## Returns true if the first argument [param inner] is completely enclosed within the
 ## second argument [param outer].
-func is_completely_enclosed(inner: PackedVector2Array, outer: PackedVector2Array) -> bool:
+static func is_completely_enclosed(inner: PackedVector2Array, outer: PackedVector2Array) -> bool:
     var clip_result := Geometry2D.clip_polygons(outer, inner)
     var enclosed := false
     for p in clip_result:
@@ -21,7 +21,7 @@ func is_completely_enclosed(inner: PackedVector2Array, outer: PackedVector2Array
 
 ## Compute the area of a polygon. Uses the algorithm found here:
 ## [url=https://web.archive.org/web/20100405070507/http://valis.cs.uiuc.edu/~sariel/research/CG/compgeom/msg00831.html]Wayback Machine[/url]
-func area(polygon: PackedVector2Array) -> float:
+static func area(polygon: PackedVector2Array) -> float:
     var twice_area := 0.0
     for i in polygon.size():
         var j := (i + 1) % polygon.size()
@@ -30,7 +30,7 @@ func area(polygon: PackedVector2Array) -> float:
     return absf(twice_area * 0.5)
 
 
-func extents(polygon: PackedVector2Array) -> Rect2:
+static func extents(polygon: PackedVector2Array) -> Rect2:
     var right: float
     var left: float
     var bottom: float
@@ -50,7 +50,7 @@ func extents(polygon: PackedVector2Array) -> Rect2:
     return Rect2(left, top, right - left, bottom - top)
 
 
-func rect_to_polygon(rect: Rect2) -> PackedVector2Array:
+static func rect_to_polygon(rect: Rect2) -> PackedVector2Array:
     return [
         rect.position,
         Vector2(rect.position.x, rect.end.y),
@@ -59,7 +59,7 @@ func rect_to_polygon(rect: Rect2) -> PackedVector2Array:
     ]
 
 
-func split(polygon: PackedVector2Array, split_point: Vector2) -> SplitResult:
+static func split(polygon: PackedVector2Array, split_point: Vector2) -> SplitResult:
     var bounds := extents(polygon)
     var vertical := bounds.size.x > bounds.size.y
     if vertical:
@@ -76,12 +76,12 @@ func split(polygon: PackedVector2Array, split_point: Vector2) -> SplitResult:
     return result
 
 
-func offset_in_place(polygon: PackedVector2Array, translation: Vector2):
+static func offset_in_place(polygon: PackedVector2Array, translation: Vector2):
     for i in polygon.size():
         polygon[i] += translation
 
 
-func offset(polygon: PackedVector2Array, translation: Vector2) -> PackedVector2Array:
+static func offset(polygon: PackedVector2Array, translation: Vector2) -> PackedVector2Array:
     var new_poly := PackedVector2Array()
     new_poly.resize(polygon.size())
     for i in new_poly.size():
@@ -89,7 +89,7 @@ func offset(polygon: PackedVector2Array, translation: Vector2) -> PackedVector2A
     return new_poly
 
 
-func clip_handle_holes(against: PackedVector2Array, clip: PackedVector2Array) -> Array[PackedVector2Array]:
+static func clip_handle_holes(against: PackedVector2Array, clip: PackedVector2Array) -> Array[PackedVector2Array]:
     var results := Geometry2D.clip_polygons(against, clip)
     var enclosed := false
     for p in results:
@@ -107,7 +107,7 @@ func clip_handle_holes(against: PackedVector2Array, clip: PackedVector2Array) ->
     return results
 
 
-func generate_circle(radius: float, points: int) -> PackedVector2Array:
+static func generate_circle(radius: float, points: int) -> PackedVector2Array:
     var circle := PackedVector2Array()
     circle.resize(points)
     var theta := (2 * PI) / points

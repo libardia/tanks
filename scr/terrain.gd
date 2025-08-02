@@ -18,6 +18,7 @@ var chunk_index: int = 0
 
 func _ready() -> void:
     terrain_image = terrain_texture.get_image()
+    position = terrain_image.get_size() / -2.0
 
     generator.progress.connect(terrain_progress)
     generator.done.connect(terrain_done)
@@ -35,7 +36,6 @@ func terrain_done(polys: Array[PackedVector2Array]):
 
 
 func add_chunk(polygon: PackedVector2Array):
-    var area := PolygonUtil.area(polygon)
     if check_too_small(polygon):
         print("Skipped creating terrain chunk for being too small")
         return
@@ -46,7 +46,6 @@ func add_chunk(polygon: PackedVector2Array):
         chunk.color = Color(randf(), randf(), randf())
     if not no_texture:
         chunk.texture = terrain_texture
-    chunk.position = terrain_image.get_size() / -2.0
     chunk.name = str("TerrainChunk", chunk_index)
     chunk_index += 1
     add_child.call_deferred(chunk)
