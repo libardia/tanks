@@ -3,7 +3,7 @@ extends Node2D
 
 @export var terrain_texture: Texture2D
 @export var transparency_threshold: float = 0.1
-@export var sector_size: int = 128
+@export var chunk_size: int = 128
 @export var debug_mode: bool = true
 @export var show_original_polys: bool = false
 
@@ -14,7 +14,10 @@ var terrain_image: Image
 func _ready() -> void:
     terrain_image = terrain_texture.get_image()
     terrain_image = terrain_image.get_region(terrain_image.get_used_rect())
-    generator.begin_generate(terrain_image, transparency_threshold, terrain_progress, terrain_done)
+
+    generator.progress.connect(terrain_progress)
+    generator.done.connect(terrain_done)
+    generator.begin_generate(terrain_image, transparency_threshold, chunk_size)
 
 
 func terrain_progress(value: float):

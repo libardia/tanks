@@ -80,6 +80,11 @@ func split(polygon: PackedVector2Array, split_point: Vector2) -> SplitResult:
     return result
 
 
+func offset(polygon: PackedVector2Array, translation: Vector2):
+    for i in polygon.size():
+        polygon[i] += translation
+
+
 func clip_handle_holes(against: PackedVector2Array, clip: PackedVector2Array) -> Array[PackedVector2Array]:
     var results := Geometry2D.clip_polygons(against, clip)
     var enclosed := false
