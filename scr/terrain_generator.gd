@@ -1,13 +1,11 @@
 class_name TerrainGenerator
 
-const POLY_EPSILON := 0.0
-var gen_thread := Thread.new()
+# State ============================================================================================
 
 signal progress(prog: float)
 signal done(polys: Array[PackedVector2Array])
 
-# State ============================================================================================
-
+var gen_thread := Thread.new()
 var source_image: Image
 var transparency_threshold: float
 var chunk_size: int
