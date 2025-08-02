@@ -35,17 +35,11 @@ func generate():
 
     terrain_bitmap.create_from_image_alpha(source_image, transparency_threshold)
 
-    var chunk_threads: Array[Thread] = []
+    var results: Array[PackedVector2Array] = []
     for cy in chunk_height:
         for cx in chunk_width:
             var chunk := Rect2i(cx * chunk_size, cy * chunk_size, chunk_size, chunk_size)
-            var t := Thread.new()
-            t.start(single_chunk.bind(chunk, 0))
-            chunk_threads.append(t)
-
-    var results: Array[PackedVector2Array] = []
-    for thread in chunk_threads:
-        results.append_array(thread.wait_to_finish())
+            results.append_array(single_chunk(chunk, 0))
 
     progress.emit(1.0)
     done.emit(results)
@@ -54,7 +48,7 @@ func generate():
 func single_chunk(chunk: Rect2i, depth: int) -> Array[PackedVector2Array]:
     var polys := terrain_bitmap.opaque_to_polygons(chunk, 0)
     for p in polys:
-        PolygonUtil.offset(p, chunk.position)
+        PolygonUtil.offset_in_place(p, chunk.position)
     for y in chunk.size.y:
         var ty = y + chunk.position.y
         if ty >= terrain_bitmap.get_size().y:
@@ -87,16 +81,19 @@ func chunk_done():
     chunks_done_mutex.unlock()
 
 
-
 func split_rect(rect: Rect2i, point: Vector2i) -> Array[Rect2i]:
     var r1 := Rect2i(rect)
     var r2 := Rect2i(rect)
     if rect.size.x > rect.size.y:
+        if point.x == rect.position.x:
+            point.x += 1
         r1.end = Vector2i(point.x, r1.end.y)
         var r2end = r2.end
         r2.position = Vector2i(point.x, r2.position.y)
         r2.end = r2end
     else:
+        if point.y == rect.position.y:
+            point.y += 1
         r1.end = Vector2i(r1.end.x, point.y)
         var r2end = r2.end
         r2.position = Vector2i(r2.position.x, point.y)

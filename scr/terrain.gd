@@ -1,19 +1,23 @@
+class_name Terrain
 extends Node2D
 
 
 @export var terrain_texture: Texture2D
-@export var transparency_threshold: float = 0.1
+@export var transparency_threshold: float = 0.75
 @export var chunk_size: int = 128
-@export var debug_mode: bool = true
-@export var show_original_polys: bool = false
+@export var minimum_chunk_area: float = 10
+@export_category("Debug")
+@export var debug_colors: bool = false
+@export var no_texture: bool = false
 
+var chunk_scene: PackedScene = preload("res://obj/terrain-chunk.tscn")
 var generator := TerrainGenerator.new()
 var terrain_image: Image
+var chunk_index: int = 0
 
 
 func _ready() -> void:
     terrain_image = terrain_texture.get_image()
-    terrain_image = terrain_image.get_region(terrain_image.get_used_rect())
 
     generator.progress.connect(terrain_progress)
     generator.done.connect(terrain_done)
@@ -27,8 +31,36 @@ func terrain_progress(value: float):
 func terrain_done(polys: Array[PackedVector2Array]):
     print("Terrain done with ", polys.size(), " polygons")
     for p in polys:
-        var chunk: TerrainChunk = preload("res://obj/terrain-chunk.tscn").instantiate()
-        chunk.polygon = p
+        add_chunk(p)
+
+
+func add_chunk(polygon: PackedVector2Array):
+    var area := PolygonUtil.area(polygon)
+    if check_too_small(polygon):
+        print("Skipped creating terrain chunk for being too small")
+        return
+    var chunk: TerrainChunk = chunk_scene.instantiate()
+    chunk.terrain = self
+    chunk.polygon = polygon
+    if debug_colors:
         chunk.color = Color(randf(), randf(), randf())
-        chunk.position = terrain_image.get_size() / -2.0
-        add_child.call_deferred(chunk)
+    if not no_texture:
+        chunk.texture = terrain_texture
+    chunk.position = terrain_image.get_size() / -2.0
+    chunk.name = str("TerrainChunk", chunk_index)
+    chunk_index += 1
+    add_child.call_deferred(chunk)
+
+
+func check_too_small(polygon: PackedVector2Array) -> bool:
+    var area := PolygonUtil.area(polygon)
+    if area < minimum_chunk_area:
+        print("Polygon is too small, area = ", area)
+        return true
+    return false
+
+
+func destroy_if_small(chunk: TerrainChunk):
+    if check_too_small(chunk.polygon):
+        print("Destroying ", chunk.name, " for being too small")
+        chunk.queue_free()
