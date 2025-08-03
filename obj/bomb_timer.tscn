@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bt08ehw885f2s"]
+
+[ext_resource type="Script" uid="uid://t7sjr6ogmfqw" path="res://scr/bomb_timer.gd" id="1_fvgsr"]
+[ext_resource type="Texture2D" uid="uid://dr6sefanmva3" path="res://img/elementExplosive001.png" id="1_rbef1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rbef1"]
+radius = 35.0
+
+[node name="BombTimer" type="RigidBody2D"]
+script = ExtResource("1_fvgsr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_rbef1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rbef1")
+
+[node name="FuseTimer" type="Timer" parent="."]

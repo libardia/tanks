@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cyuh6721u1dvf" path="res://obj/terrain.tscn" id="1_ig7tw"]
 [ext_resource type="Texture2D" uid="uid://bexuh4cew0nn7" path="res://img/ground01.ase" id="2_0xm2m"]
-[ext_resource type="Script" uid="uid://2owofy5ecyxy" path="res://scr/circle.gd" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://l07lx5ejh3ao" path="res://scr/bomb_spawner.gd" id="3_h2yge"]
 
 [node name="Main" type="Node2D"]
 
@@ -13,10 +13,5 @@ terrain_texture = ExtResource("2_0xm2m")
 debug_colors = true
 no_texture = true
 
-[node name="Cutter" type="Area2D" parent="."]
+[node name="BombSpawner" type="Node2D" parent="."]
 script = ExtResource("3_h2yge")
-points = 50
-
-[node name="Polygon2D" type="Polygon2D" parent="Cutter"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Cutter"]

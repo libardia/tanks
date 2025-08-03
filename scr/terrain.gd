@@ -10,7 +10,7 @@ extends Node2D
 @export var debug_colors: bool = false
 @export var no_texture: bool = false
 
-var chunk_scene: PackedScene = preload("res://obj/terrain-chunk.tscn")
+var chunk_scene: PackedScene = preload("res://obj/terrain_chunk.tscn")
 var generator := TerrainGenerator.new()
 var terrain_image: Image
 var chunk_index: int = 0

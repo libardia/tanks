@@ -39,13 +39,13 @@ func generate():
     for cy in chunk_height:
         for cx in chunk_width:
             var chunk := Rect2i(cx * chunk_size, cy * chunk_size, chunk_size, chunk_size)
-            results.append_array(single_chunk(chunk, 0))
+            results.append_array(recursive_chunk(chunk, 0))
 
     progress.emit(1.0)
     done.emit(results)
 
 
-func single_chunk(chunk: Rect2i, depth: int) -> Array[PackedVector2Array]:
+func recursive_chunk(chunk: Rect2i, depth: int) -> Array[PackedVector2Array]:
     var polys := terrain_bitmap.opaque_to_polygons(chunk, 0)
     for p in polys:
         PolygonUtil.offset_in_place(p, chunk.position)
@@ -64,7 +64,7 @@ func single_chunk(chunk: Rect2i, depth: int) -> Array[PackedVector2Array]:
                     if Geometry2D.is_point_in_polygon(pf, poly):
                         var new_polys: Array[PackedVector2Array] = []
                         for r in split_rect(chunk, pi):
-                            new_polys.append_array(single_chunk(r, depth + 1))
+                            new_polys.append_array(recursive_chunk(r, depth + 1))
                         if depth == 0:
                             chunk_done()
                         return new_polys

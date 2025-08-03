@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bogxadb4kk1c5"]
+
+[ext_resource type="Texture2D" uid="uid://lg5bgjcedvmf" path="res://img/elementExplosive004.png" id="1_rmado"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rbef1"]
+radius = 35.0
+
+[node name="BombContact" type="RigidBody2D"]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(1, 0, 0, 1)
+polygon = PackedVector2Array(-1, -29, -21, -19, -29, -1, -21, 20, 6, 28, 26, 12, 26, -15)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.19209e-07, 4.3201e-12)
+scale = Vector2(1, 0.999998)
+texture = ExtResource("1_rmado")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rbef1")
