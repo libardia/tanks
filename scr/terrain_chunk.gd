@@ -40,8 +40,9 @@ func _ready() -> void:
     texture = _texture
 
 
-func clip(other: PackedVector2Array):
-    var new_polys := PolygonUtil.clip_handle_holes(polygon, other)
+func clip(other_poly: PackedVector2Array, other_global_position: Vector2):
+    var offset_poly := PolygonUtil.offset(other_poly, to_local(other_global_position))
+    var new_polys := PolygonUtil.clip_handle_holes(polygon, offset_poly)
     if new_polys.is_empty():
         print(name, " completely clipped, destroying.")
         queue_free()

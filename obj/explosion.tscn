@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cy0trwbbej26u"]
+
+[ext_resource type="Script" uid="uid://c4a1tnrtoogke" path="res://scr/explosion.gd" id="1_xnrw8"]
+
+[node name="Explosion" type="Area2D"]
+script = ExtResource("1_xnrw8")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]

@@ -15,6 +15,10 @@ config/tags=PackedStringArray("2d", "mine", "physics")
 run/main_scene="uid://bm56bia4coh0m"
 config/features=PackedStringArray("4.4", "Forward Plus")
 
+[autoload]
+
+ExplosionSpawner="*res://scr/global/explosion_spawner.gd"
+
 [dotnet]
 
 project/assembly_name="tanks"

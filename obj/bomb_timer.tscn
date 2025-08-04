@@ -1,18 +1,87 @@
-[gd_scene load_steps=4 format=3 uid="uid://bt08ehw885f2s"]
+[gd_scene load_steps=8 format=3 uid="uid://bt08ehw885f2s"]
 
 [ext_resource type="Script" uid="uid://t7sjr6ogmfqw" path="res://scr/bomb_timer.gd" id="1_fvgsr"]
 [ext_resource type="Texture2D" uid="uid://dr6sefanmva3" path="res://img/elementExplosive001.png" id="1_rbef1"]
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_fvgsr"]
+bounce = 0.34
+
+[sub_resource type="Animation" id="Animation_4l383"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fvgsr"]
+resource_name = "blink"
+length = 0.5
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j7lp7"]
+_data = {
+&"RESET": SubResource("Animation_4l383"),
+&"blink": SubResource("Animation_fvgsr")
+}
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_rbef1"]
-radius = 35.0
+radius = 17.0
 
 [node name="BombTimer" type="RigidBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_fvgsr")
+can_sleep = false
 script = ExtResource("1_fvgsr")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_j7lp7")
+}
+
+[node name="FuseTimer" type="Timer" parent="."]
+one_shot = true
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_rbef1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_rbef1")
 
-[node name="FuseTimer" type="Timer" parent="."]
+[node name="TimerLabel" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 10
+text = "9"
+horizontal_alignment = 1
+vertical_alignment = 1

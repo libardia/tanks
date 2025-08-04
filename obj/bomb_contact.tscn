@@ -1,19 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://bogxadb4kk1c5"]
+[gd_scene load_steps=4 format=3 uid="uid://bogxadb4kk1c5"]
 
+[ext_resource type="Script" uid="uid://d4a2383vsjn44" path="res://scr/bomb_contact.gd" id="1_b76c8"]
 [ext_resource type="Texture2D" uid="uid://lg5bgjcedvmf" path="res://img/elementExplosive004.png" id="1_rmado"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rbef1"]
-radius = 35.0
+radius = 17.0
 
 [node name="BombContact" type="RigidBody2D"]
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_b76c8")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(9.53674e-07, 9.53674e-07)
+scale = Vector2(0.454545, 0.473684)
 color = Color(1, 0, 0, 1)
 polygon = PackedVector2Array(-1, -29, -21, -19, -29, -1, -21, 20, 6, 28, 26, 12, 26, -15)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-1.19209e-07, 4.3201e-12)
-scale = Vector2(1, 0.999998)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_rmado")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
