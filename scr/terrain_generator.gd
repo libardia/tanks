@@ -32,15 +32,12 @@ func begin_generate(source_image: Image, transparency_threshold: float, chunk_si
 
 func generate():
     progress.emit(0.0)
-
     terrain_bitmap.create_from_image_alpha(source_image, transparency_threshold)
-
     var results: Array[PackedVector2Array] = []
     for cy in chunk_height:
         for cx in chunk_width:
             var chunk := Rect2i(cx * chunk_size, cy * chunk_size, chunk_size, chunk_size)
             results.append_array(recursive_chunk(chunk, 0))
-
     progress.emit(1.0)
     done.emit(results)
 

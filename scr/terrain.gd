@@ -19,7 +19,6 @@ var chunk_index: int = 0
 func _ready() -> void:
     terrain_image = terrain_texture.get_image()
     position = terrain_image.get_size() / -2.0
-
     generator.progress.connect(terrain_progress)
     generator.done.connect(terrain_done)
     generator.begin_generate(terrain_image, transparency_threshold, chunk_size)

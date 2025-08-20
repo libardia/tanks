@@ -12,12 +12,13 @@ config_version=5
 
 config/name="tanks"
 config/tags=PackedStringArray("2d", "mine", "physics")
-run/main_scene="uid://bm56bia4coh0m"
+run/main_scene="uid://ba8tqk8xmrfq4"
 config/features=PackedStringArray("4.4", "Forward Plus")
 
 [autoload]
 
 ExplosionSpawner="*res://scr/global/explosion_spawner.gd"
+LoadManager="*res://scr/global/load_manager.gd"
 
 [dotnet]
 
