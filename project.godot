@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 
 ExplosionSpawner="*res://scr/global/explosion_spawner.gd"
 LoadManager="*res://scr/global/load_manager.gd"
+CrossScene="*res://scr/global/cross_scene.gd"
 
 [dotnet]
 

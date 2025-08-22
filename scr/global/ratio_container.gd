@@ -10,7 +10,7 @@ enum Alignment { BEGIN, CENTER, END }
     set(value):
         vertical_ratio = value
         queue_sort()
-@export var vertical_alignment: Alignment:
+@export var vertical_alignment: Alignment = Alignment.CENTER:
     get:
         return vertical_alignment
     set(value):
@@ -22,7 +22,7 @@ enum Alignment { BEGIN, CENTER, END }
     set(value):
         horizontal_ratio = value
         queue_sort()
-@export var horizontal_alignment: Alignment:
+@export var horizontal_alignment: Alignment = Alignment.CENTER:
     get:
         return horizontal_alignment
     set(value):
@@ -37,10 +37,8 @@ func _notification(what: int) -> void:
                 var c := child as Control
                 var final_rect := Rect2(Vector2.ZERO, size)
                 var c_min := c.get_combined_minimum_size()
-                #final_rect.size.x = max(size.x * horizontal_ratio, c_min.x)
-                #final_rect.size.y = max(size.y * vertical_ratio, c_min.y)
-                final_rect.size.x = size.x * horizontal_ratio
-                final_rect.size.y = size.y * vertical_ratio
+                final_rect.size.x = max(size.x * horizontal_ratio, c_min.x)
+                final_rect.size.y = max(size.y * vertical_ratio, c_min.y)
                 match horizontal_alignment:
                     Alignment.CENTER:
                         final_rect.position.x = (size.x - final_rect.size.x) / 2

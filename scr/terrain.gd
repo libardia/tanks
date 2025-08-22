@@ -2,7 +2,6 @@ class_name Terrain
 extends Node2D
 
 
-@export var terrain_texture: Texture2D
 @export var transparency_threshold: float = 0.75
 @export var chunk_size: int = 128
 @export var minimum_chunk_area: float = 10
@@ -10,6 +9,7 @@ extends Node2D
 @export var debug_colors: bool = false
 @export var no_texture: bool = false
 
+var terrain_texture: Texture2D
 var chunk_scene: PackedScene = preload("res://obj/terrain_chunk.tscn")
 var generator := TerrainGenerator.new()
 var terrain_image: Image
@@ -17,6 +17,9 @@ var chunk_index: int = 0
 
 
 func _ready() -> void:
+    LoadManager.register_node_waiting(self)
+    LoadManager.set_message("Generating terrain...")
+    terrain_texture = CrossScene.terrain_texture
     terrain_image = terrain_texture.get_image()
     position = terrain_image.get_size() / -2.0
     generator.progress.connect(terrain_progress)
@@ -25,13 +28,14 @@ func _ready() -> void:
 
 
 func terrain_progress(value: float):
-    print("Progress: ", value)
+    LoadManager.report_node_progress(self, value)
 
 
 func terrain_done(polys: Array[PackedVector2Array]):
     print("Terrain done with ", polys.size(), " polygons")
     for p in polys:
         add_chunk(p)
+    LoadManager.report_node_done(self)
 
 
 func add_chunk(polygon: PackedVector2Array):

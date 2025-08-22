@@ -1,22 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://bm56bia4coh0m"]
+[gd_scene load_steps=5 format=3 uid="uid://bm56bia4coh0m"]
 
 [ext_resource type="PackedScene" uid="uid://cyuh6721u1dvf" path="res://obj/terrain.tscn" id="1_b6phj"]
-[ext_resource type="PackedScene" uid="uid://b7n7enl86yrxg" path="res://scn/loading_screen.tscn" id="1_nq6di"]
-[ext_resource type="Texture2D" uid="uid://bexuh4cew0nn7" path="res://img/ground01.ase" id="2_nq6di"]
 [ext_resource type="Script" uid="uid://l07lx5ejh3ao" path="res://scr/bomb_spawner.gd" id="3_vnkvy"]
 [ext_resource type="PackedScene" uid="uid://bt08ehw885f2s" path="res://obj/bomb_timer.tscn" id="4_315pe"]
 [ext_resource type="PackedScene" uid="uid://bogxadb4kk1c5" path="res://obj/bomb_contact.tscn" id="5_n2tm1"]
 
 [node name="Main" type="Node2D"]
-process_mode = 4
-
-[node name="LoadingScreen" parent="." instance=ExtResource("1_nq6di")]
-process_mode = 3
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Terrain" parent="." instance=ExtResource("1_b6phj")]
-terrain_texture = ExtResource("2_nq6di")
 debug_colors = true
 no_texture = true
 

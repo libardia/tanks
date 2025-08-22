@@ -66,7 +66,7 @@ func set_message(message: String):
 
 func register_node_waiting(node: Node, weight: float = 1.0):
     mutex.lock()
-    if loading_state != LoadingState.WAITING_FOR_SCENE_READY:
+    if loading_state == LoadingState.WAITING_FOR_SCENE_READY:
         var info := WaitingNodeInfo.new()
         info.weight = weight
         nodes_waiting[node] = info
@@ -76,7 +76,7 @@ func register_node_waiting(node: Node, weight: float = 1.0):
 
 func report_node_progress(node: Node, progress: float):
     mutex.lock()
-    if loading_state != LoadingState.WAITING_FOR_SCENE_READY and nodes_waiting.has(node):
+    if loading_state == LoadingState.WAITING_FOR_SCENE_READY and nodes_waiting.has(node):
         var dp := progress - nodes_waiting[node].progress
         total_ready_progress += dp * nodes_waiting[node].weight
         nodes_waiting[node].progress = progress
@@ -85,7 +85,7 @@ func report_node_progress(node: Node, progress: float):
 
 func report_node_done(node: Node):
     mutex.lock()
-    if loading_state != LoadingState.WAITING_FOR_SCENE_READY and nodes_waiting.has(node):
+    if loading_state == LoadingState.WAITING_FOR_SCENE_READY and nodes_waiting.has(node):
         var dp := 1.0 - nodes_waiting[node].progress
         total_ready_progress += dp * nodes_waiting[node].weight
         nodes_waiting.erase(node)
@@ -175,7 +175,6 @@ func cleanup():
     process_mode = Node.PROCESS_MODE_DISABLED
     # Reset state
     loading_state = LoadingState.IDLE
-    load_screen = null
     scene_path = ""
     loaded_scene = null
     file_load_progress = []

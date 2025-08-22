@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://b7n7enl86yrxg"]
+[gd_scene load_steps=4 format=3 uid="uid://b7n7enl86yrxg"]
 
 [ext_resource type="Script" uid="uid://5ili7armkgy7" path="res://scr/loading_screen_basic.gd" id="1_ddfew"]
+[ext_resource type="Script" uid="uid://c55yv366d8sq2" path="res://scr/global/ratio_container.gd" id="2_0ta5a"]
+[ext_resource type="StyleBox" uid="uid://q18wtqdugasa" path="res://panel_stylebox.tres" id="2_vhpma"]
 
 [node name="LoadingScreen" type="CanvasLayer"]
 layer = 128
@@ -12,19 +14,24 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_vhpma")
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-custom_minimum_size = Vector2(482.755, 0)
+[node name="RatioContainer" type="Container" parent="PanelContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+script = ExtResource("2_0ta5a")
+horizontal_ratio = 0.6
+metadata/_custom_type_script = "uid://c55yv366d8sq2"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/RatioContainer"]
+layout_mode = 2
 alignment = 1
 
-[node name="Message" type="Label" parent="PanelContainer/VBoxContainer"]
+[node name="Message" type="Label" parent="PanelContainer/RatioContainer/VBoxContainer"]
 layout_mode = 2
 text = "Loading..."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/VBoxContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/RatioContainer/VBoxContainer"]
 layout_mode = 2
