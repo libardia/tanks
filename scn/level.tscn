@@ -1,29 +1,37 @@
-[gd_scene load_steps=5 format=3 uid="uid://bm56bia4coh0m"]
+[gd_scene load_steps=6 format=3 uid="uid://bm56bia4coh0m"]
 
 [ext_resource type="PackedScene" uid="uid://cyuh6721u1dvf" path="res://obj/terrain.tscn" id="1_b6phj"]
+[ext_resource type="Script" uid="uid://bg83csv2r13t6" path="res://scr/num_chunks.gd" id="1_nkl5l"]
+[ext_resource type="Script" uid="uid://feswhnou60lj" path="res://scn/debug_color_status.gd" id="2_5odhy"]
+[ext_resource type="Script" uid="uid://dhnhsgl26buo0" path="res://scn/debug_texture_status.gd" id="3_txx7g"]
 [ext_resource type="Script" uid="uid://l07lx5ejh3ao" path="res://scr/bomb_spawner.gd" id="3_vnkvy"]
-[ext_resource type="PackedScene" uid="uid://bt08ehw885f2s" path="res://obj/bomb_timer.tscn" id="4_315pe"]
-[ext_resource type="PackedScene" uid="uid://bogxadb4kk1c5" path="res://obj/bomb_contact.tscn" id="5_n2tm1"]
 
-[node name="Main" type="Node2D"]
+[node name="Level" type="Node2D"]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD"]
+offset_right = 334.0
+offset_bottom = 50.0
+
+[node name="NumChunks" type="Label" parent="HUD/VBoxContainer"]
+layout_mode = 2
+text = "Total terrain chunks: %d"
+script = ExtResource("1_nkl5l")
+
+[node name="DebugColorStatus" type="Label" parent="HUD/VBoxContainer"]
+layout_mode = 2
+text = "%s - Toggle terrain chunk debug colors [%s]"
+script = ExtResource("2_5odhy")
+
+[node name="DebugTextureStatus" type="Label" parent="HUD/VBoxContainer"]
+layout_mode = 2
+text = "%s - Toggle terrain texture [%s]"
+script = ExtResource("3_txx7g")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Terrain" parent="." instance=ExtResource("1_b6phj")]
-debug_colors = true
-no_texture = true
 
 [node name="BombSpawner" type="Node2D" parent="."]
 script = ExtResource("3_vnkvy")
-
-[node name="BombTimer" parent="." instance=ExtResource("4_315pe")]
-position = Vector2(-24, -422)
-explosion_force = 750.0
-
-[node name="BombTimer2" parent="." instance=ExtResource("4_315pe")]
-position = Vector2(-74, -390)
-fuse_time_seconds = 2
-explosion_force = 750.0
-
-[node name="BombContact" parent="." instance=ExtResource("5_n2tm1")]
-position = Vector2(42, -536)

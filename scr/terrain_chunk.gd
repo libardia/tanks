@@ -28,6 +28,7 @@ var texture: Texture2D:
         if view_polygon != null: view_polygon.texture = value
 
 var terrain: Terrain
+var debug_color: Color = Color(randf(), randf(), randf())
 
 @onready var view_polygon: Polygon2D = $View
 @onready var coll_polygon: CollisionPolygon2D = $Collision
@@ -38,6 +39,14 @@ func _ready() -> void:
     polygon = _polygon
     color = _color
     texture = _texture
+
+
+func set_debug_color(debug_color_on: bool):
+    color = debug_color if debug_color_on else Color.WHITE
+
+
+func set_debug_texture_disabled(texture_disabled: bool):
+    texture = null if texture_disabled else CrossScene.terrain_texture
 
 
 func clip(other_poly: PackedVector2Array, other_global_position: Vector2):

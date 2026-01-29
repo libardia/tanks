@@ -6,8 +6,23 @@ extends Node2D
 @export var chunk_size: int = 128
 @export var minimum_chunk_area: float = 10
 @export_category("Debug")
-@export var debug_colors: bool = false
-@export var no_texture: bool = false
+@export var debug_colors: bool = false:
+    get:
+        return debug_colors
+    set(value):
+        debug_colors = value
+        change_debug_colors.emit(value)
+@export var no_texture: bool = false:
+    get:
+        return no_texture
+    set(value):
+        no_texture = value
+        change_debug_disable_texture.emit(value)
+
+
+signal change_debug_colors(debug_colors: bool)
+signal change_debug_disable_texture(disable_texture: bool)
+
 
 var terrain_texture: Texture2D
 var chunk_scene: PackedScene = preload("res://obj/terrain_chunk.tscn")
@@ -27,6 +42,13 @@ func _ready() -> void:
     generator.begin_generate(terrain_image, transparency_threshold, chunk_size)
 
 
+func _unhandled_input(event: InputEvent) -> void:
+    if event.is_action_pressed("debug-colors"):
+        debug_colors = not debug_colors
+    elif event.is_action_pressed("debug-disable-texture"):
+        no_texture = not no_texture
+
+
 func terrain_progress(value: float):
     LoadManager.report_node_progress(self, value)
 
@@ -44,9 +66,11 @@ func add_chunk(polygon: PackedVector2Array):
         return
     var chunk: TerrainChunk = chunk_scene.instantiate()
     chunk.terrain = self
+    change_debug_colors.connect.call_deferred(chunk.set_debug_color)
+    change_debug_disable_texture.connect.call_deferred(chunk.set_debug_texture_disabled)
     chunk.polygon = polygon
     if debug_colors:
-        chunk.color = Color(randf(), randf(), randf())
+        chunk.color = chunk.debug_color
     if not no_texture:
         chunk.texture = terrain_texture
     chunk.name = str("TerrainChunk", chunk_index)
